@@ -1,0 +1,17 @@
+{
+  "career": "ML Engineer",
+
+  "required_skills": [
+    "Python",
+    "PyTorch",
+    "Machine Learning",
+    "Deep Learning",
+    "Transformer"
+  ],
+
+  "bonus_skills": [
+    "MLOps",
+    "Kubeflow",
+    "AWS"
+  ]
+}

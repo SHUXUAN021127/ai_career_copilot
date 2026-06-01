@@ -1,4 +1,4 @@
-from services.jd_analyzer import analyze_jd
+from backend.services.jd_analyzer import analyze_jd
 
 jd = """
 AI Application Engineer

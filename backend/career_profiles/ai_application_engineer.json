@@ -1,0 +1,24 @@
+{
+  "career": "AI Application Engineer",
+
+  "required_skills": [
+    "Python",
+    "FastAPI",
+    "LangChain",
+    "RAG",
+    "Prompt Engineering",
+    "Docker"
+  ],
+
+  "bonus_skills": [
+    "LangGraph",
+    "AWS",
+    "Kubernetes"
+  ],
+
+  "projects": [
+    "RAG System",
+    "Multi-Agent System",
+    "AI Assistant"
+  ]
+}

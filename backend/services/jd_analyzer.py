@@ -1,4 +1,4 @@
-from services.llm_service import get_llm
+from backend.services.llm_service import get_llm
 
 client = get_llm()
 

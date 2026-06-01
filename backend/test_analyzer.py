@@ -1,4 +1,4 @@
-from services.resume_analyzer import analyze_resume
+from backend.services.resume_analyzer import analyze_resume
 import os
 
 text = """

@@ -1,4 +1,4 @@
-from services.llm_service import get_llm
+from backend.services.llm_service import get_llm
 import json
 
 client = get_llm()
@@ -37,4 +37,6 @@ def analyze_resume(resume_text: str):
         temperature=0
     )
 
-    return response.choices[0].message.content
+    result = response.choices[0].message.content
+
+    return json.loads(result)

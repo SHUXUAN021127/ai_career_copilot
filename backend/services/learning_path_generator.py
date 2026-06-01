@@ -2,29 +2,27 @@ from backend.services.llm_service import get_llm
 
 client = get_llm()
 
-def rewrite_resume(
-    resume_text: str,
-    missing_skills: list[str]
+def generate_learning_path(
+    career,
+    missing_skills
 ):
 
     prompt = f"""
-你是一位资深AI招聘顾问。
+目标岗位：
 
-当前简历：
-
-{resume_text}
+{career}
 
 缺失技能：
 
 {missing_skills}
 
-请给出：
+请制定3个月学习路线。
 
-1. 简历优化建议
-2. 项目描述优化建议
-3. 学习路线建议
+要求：
 
-返回Markdown格式。
+1. 分阶段
+2. 具体到项目实践
+3. 输出Markdown
 """
 
     response = client.chat.completions.create(
