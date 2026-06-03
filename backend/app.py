@@ -1,17 +1,30 @@
 from pathlib import Path
 import uuid
-
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File, HTTPException
-
+from backend.services.interview_question_generator import generate_questions
 from backend.config import UPLOAD_DIR
 from backend.services.resume_parser import extract_text_from_pdf
 from backend.services.resume_analyzer import analyze_resume
 from backend.services.report_generator import generate_report
+from backend.services.interview_evaluator import (
+    evaluate_answer
+)
 
 
 app = FastAPI(
     title="AI Career Copilot",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "*"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 UPLOAD_DIR.mkdir(
@@ -58,6 +71,57 @@ def get_careers():
         "careers": careers
     }
 
+
+@app.get("/interview-questions")
+async def interview_questions(
+    career: str
+):
+    # return {
+    #     "questions":
+    #         generate_questions(
+    #             career
+    #         )
+    # }
+    return {
+        "questions": f"""
+    Q1: 什么是RAG？
+
+    Q2: 什么是Embedding？
+
+    Q3: LangChain和LangGraph有什么区别？
+
+    Q4: FastAPI为什么适合AI应用开发？
+
+    Q5: 请介绍一个你做过的AI项目。
+    """
+    }
+
+from pydantic import BaseModel
+
+class InterviewRequest(
+    BaseModel
+):
+    question: str
+    answer: str
+
+
+@app.post(
+    "/evaluate-interview"
+)
+async def evaluate_interview(
+    req: InterviewRequest
+):
+
+    feedback = (
+        evaluate_answer(
+            req.question,
+            req.answer
+        )
+    )
+
+    return {
+        "feedback": feedback
+    }
 
 @app.post("/upload-resume")
 async def upload_resume(
