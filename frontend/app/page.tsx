@@ -32,6 +32,16 @@ useState<any[]>([]);
 const [answer, setAnswer] =
 useState("");
 
+const [finalFeedback,
+setFinalFeedback] =
+useState("");
+
+const [finalScore,
+setFinalScore] =
+useState<number | null>(
+  null
+);
+
 useEffect(() => {
 
  
@@ -240,6 +250,36 @@ try {
 
 }
  
+
+};
+
+const finishInterview =
+async () => {
+
+  console.log("finish start");
+
+  try {
+
+    const response =
+      await api.post(
+        "/interview-summary",
+        {
+          history:
+            chatHistory
+        }
+      );
+
+    console.log(response);
+
+    setFinalFeedback(
+      response.data.result
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
 
 };
 
@@ -639,10 +679,61 @@ return (
               >
                 Submit Answer
               </button>
+              <button
+                  onClick={
+                    finishInterview
+                  }
+                  className="
+                    mt-4
+                    ml-4
+                    bg-red-600
+                    text-white
+                    px-4
+                    py-2
+                    rounded
+                  "
+                >
+                  Finish Interview
+                </button>
+              {
+                  finalFeedback && (
 
+                    <div
+                      className="
+                        mt-6
+                        border
+                        rounded-lg
+                        p-4
+                        bg-white
+                      "
+                    >
+
+                      <h3
+                        className="
+                          text-xl
+                          font-bold
+                          mb-4
+                        "
+                      >
+                        Interview Report
+                      </h3>
+
+                      <pre
+                        className="
+                          whitespace-pre-wrap
+                        "
+                      >
+                        {finalFeedback}
+                      </pre>
+
+                    </div>
+
+                  )
+                }
             </div>
 
           )
+
 
         }
 

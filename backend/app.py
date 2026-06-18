@@ -14,6 +14,9 @@ from backend.services.interview_followup_generator import (
     generate_followup
 )
 from pydantic import BaseModel
+from backend.services.interview_summary_evaluator import (
+    evaluate_interview
+)
 
 app = FastAPI(
     title="AI Career Copilot",
@@ -48,6 +51,11 @@ class CareerType(str, Enum):
     ml_engineer = "ml_engineer"
     data_analyst = "data_analyst"
     # backend_engineer = "backend_engineer"
+
+class InterviewSummaryRequest(
+    BaseModel
+):
+    history:list
 
 @app.get("/")
 def root():
@@ -111,7 +119,7 @@ class InterviewRequest(
 @app.post(
     "/evaluate-interview"
 )
-async def evaluate_interview(
+async def evaluate_interview_score(
     req: InterviewRequest
 ):
 
@@ -124,6 +132,19 @@ async def evaluate_interview(
 
     return {
         "feedback": feedback
+    }
+
+@app.post("/interview-summary")
+async def interview_summary(
+    req: InterviewSummaryRequest
+):
+
+    result = evaluate_interview(
+          req.history
+      )
+
+    return {
+        "result": result
     }
 
 @app.post("/upload-resume")
