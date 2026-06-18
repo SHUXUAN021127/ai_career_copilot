@@ -2,34 +2,31 @@ from backend.services.llm_service import get_llm
 
 client = get_llm()
 
-def generate_questions(career):
+
+def generate_first_question(career):
 
     prompt = f"""
-你是一名技术面试官。
+你是一名资深AI面试官。
 
 岗位：
 
 {career}
 
-请生成5道面试题。
+请生成第一道面试题。
 
-格式：
-
-Q1:
-Q2:
-Q3:
-Q4:
-Q5:
+只返回问题。
 """
 
-    response = client.chat.completions.create(
-        model="qwen-plus",
-        messages=[
-            {
-                "role":"user",
-                "content":prompt
-            }
-        ]
+    response = (
+        client.chat.completions.create(
+            model="qwen-plus",
+            messages=[
+                {
+                    "role":"user",
+                    "content":prompt
+                }
+            ]
+        )
     )
 
     return (

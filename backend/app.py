@@ -2,7 +2,6 @@ from pathlib import Path
 import uuid
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from backend.services.interview_question_generator import generate_questions
 from backend.config import UPLOAD_DIR
 from backend.services.resume_parser import extract_text_from_pdf
 from backend.services.resume_analyzer import analyze_resume
@@ -10,7 +9,11 @@ from backend.services.report_generator import generate_report
 from backend.services.interview_evaluator import (
     evaluate_answer
 )
-
+from backend.services.interview_question_generator import generate_first_question
+from backend.services.interview_followup_generator import (
+    generate_followup
+)
+from pydantic import BaseModel
 
 app = FastAPI(
     title="AI Career Copilot",
@@ -33,6 +36,12 @@ UPLOAD_DIR.mkdir(
 )
 
 from enum import Enum
+
+class FollowupRequest(
+    BaseModel
+):
+    question:str
+    answer:str
 
 class CareerType(str, Enum):
     ai_application_engineer = "ai_application_engineer"
@@ -71,32 +80,26 @@ def get_careers():
         "careers": careers
     }
 
+@app.post("/interview-followup")
+async def interview_followup(
+    req: FollowupRequest
+):
+
+    result = generate_followup(
+        req.question,
+        req.answer
+    )
+
+    return result
 
 @app.get("/interview-questions")
 async def interview_questions(
     career: str
 ):
-    # return {
-    #     "questions":
-    #         generate_questions(
-    #             career
-    #         )
-    # }
+
     return {
-        "questions": f"""
-    Q1: 什么是RAG？
-
-    Q2: 什么是Embedding？
-
-    Q3: LangChain和LangGraph有什么区别？
-
-    Q4: FastAPI为什么适合AI应用开发？
-
-    Q5: 请介绍一个你做过的AI项目。
-    """
+        "question": generate_first_question(career)
     }
-
-from pydantic import BaseModel
 
 class InterviewRequest(
     BaseModel
