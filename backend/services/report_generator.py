@@ -1,4 +1,4 @@
-from backend.services.career_profile_service import load_career_profile
+from backend.agents.career_analysis_agent import resolve_career_profile
 from backend.services.skill_matcher import match_skills
 from backend.services.learning_path_generator import generate_learning_path
 from backend.services.resume_suggestion_generator import (
@@ -10,11 +10,10 @@ def generate_report(
     career_name
 ):
 
-    career_name = career_name.value
+    if hasattr(career_name, "value"):
+        career_name = career_name.value
 
-    profile = load_career_profile(
-        career_name
-    )
+    profile = resolve_career_profile(str(career_name))
 
     match_result = match_skills(
         resume_info["skills"],
@@ -51,6 +50,9 @@ def generate_report(
             learning_path,
 
         "resume_suggestions":
-            resume_suggestions
+            resume_suggestions,
+
+        "career_profile":
+            profile
 
     }

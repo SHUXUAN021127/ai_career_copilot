@@ -1,28 +1,30 @@
+# Backend web service
 fastapi==0.116.1
 uvicorn[standard]==0.35.0
-
 python-multipart==0.0.20
 pydantic==2.11.7
 
-dashscope==1.24.1
+# LLM provider: Alibaba Cloud DashScope through the OpenAI-compatible API
 openai==1.99.9
-
-pypdf==5.9.0
-
 python-dotenv==1.1.1
 
-requests==2.32.4
+# PDF resume parsing
+PyMuPDF==1.26.3
+
+# HTTP clients used by FastAPI/TestClient and future integrations
 httpx==0.28.1
+requests==2.32.4
 aiofiles==24.1.0
 
+# Planned multi-agent/RAG expansion. The current interview agent is implemented
+# in plain Python, but these are kept because the project roadmap includes
+# LangGraph and vector retrieval.
+langgraph==0.6.6
 langchain==0.3.27
 langchain-core==0.3.74
 langchain-community==0.3.27
-
-langgraph==0.6.6
-
 chromadb==1.0.20
-
 sentence-transformers==5.1.0
 
+# Report/template utilities
 jinja2==3.1.6
