@@ -40,11 +40,20 @@ def generate_report(
         "score":
             match_result["score"],
 
+        "level":
+            match_result["level"],
+
         "matched":
             match_result["matched"],
 
         "missing":
             match_result["missing"],
+
+        "required_count":
+            len(profile["required_skills"]),
+
+        "matched_count":
+            len(match_result["matched"]),
 
         "learning_path":
             learning_path,
